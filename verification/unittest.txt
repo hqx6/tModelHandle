@@ -1,0 +1,14 @@
+test_cache_roundtrip_and_output_not_overwritten (test_tiler.TilerTests.test_cache_roundtrip_and_output_not_overwritten) ... ok
+test_cancel_removes_partial_output (test_tiler.TilerTests.test_cancel_removes_partial_output) ... ok
+test_concave_negative_indices_y_up_and_scale (test_tiler.TilerTests.test_concave_negative_indices_y_up_and_scale) ... ok
+test_ecef_anchor_and_orientation (test_tiler.TilerTests.test_ecef_anchor_and_orientation) ... ok
+test_geometry_metadata_and_binary_layout (test_tiler.TilerTests.test_geometry_metadata_and_binary_layout) ... ok
+test_invalid_geometry_and_path_escape (test_tiler.TilerTests.test_invalid_geometry_and_path_escape) ... ok
+test_octree_add_without_loss_or_duplicate_features (test_tiler.TilerTests.test_octree_add_without_loss_or_duplicate_features) ... ok
+test_task_upload_validation (test_tiler.TilerTests.test_task_upload_validation) ... ok
+test_texture_embedded (test_tiler.TilerTests.test_texture_embedded) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.016s
+
+OK

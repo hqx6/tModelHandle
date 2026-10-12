@@ -1,0 +1,19 @@
+{
+  "version": "1.123.1",
+  "features": [
+    {
+      "id": "a85addcd-2823-5f4c-aa95-37231cc63c7f",
+      "name": "附楼",
+      "usage": "展览"
+    },
+    {
+      "id": "acfa232d-c254-51fa-ba2d-ee8dd98fc615",
+      "name": "主楼",
+      "usage": "办公"
+    }
+  ],
+  "tilesLoaded": true,
+  "commands": 4,
+  "triangles": 24,
+  "errors": []
+}

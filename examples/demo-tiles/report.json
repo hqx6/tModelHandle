@@ -1,0 +1,43 @@
+{
+  "status": "completed",
+  "objects": 2,
+  "triangles": 24,
+  "tiles": [
+    {
+      "uri": "tiles/00000.b3dm",
+      "bytes": 1880,
+      "triangles": 6,
+      "sha256": "791ae3a48211d36b518f64f9a30ca248335c576959b15e975a900f644734a7ca"
+    },
+    {
+      "uri": "tiles/00001.b3dm",
+      "bytes": 1880,
+      "triangles": 6,
+      "sha256": "3d191786b7115721d0a28d9bd6740cc9202de4dd391a512e316dd5da8221a47b"
+    },
+    {
+      "uri": "tiles/00002.b3dm",
+      "bytes": 1880,
+      "triangles": 6,
+      "sha256": "f6336cd0feb1d8ba1c64bef2c53401614be2690b9a8d116eaed5b9b8e9120408"
+    },
+    {
+      "uri": "tiles/00003.b3dm",
+      "bytes": 1880,
+      "triangles": 6,
+      "sha256": "b0b6232ac5d1fc912d2cb7f86df72bfd58445dc8a2a2d9370a31cb1e8a926c0c"
+    }
+  ],
+  "options": {
+    "longitude": 116.39123,
+    "latitude": 39.90691,
+    "height": 0,
+    "mode": "small",
+    "max_triangles": 8,
+    "max_depth": 8,
+    "visible_pixels": 25,
+    "double_sided": false
+  },
+  "warnings": [],
+  "oversizedTiles": []
+}
