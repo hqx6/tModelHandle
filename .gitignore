@@ -4,3 +4,7 @@ __pycache__/
 *.egg-info/
 workspace/
 test-output/
+verification/reverse/
+verification/server-web-fragment.js
+verification/*.snapshot.json
+verification/mesh-simplify-function.json

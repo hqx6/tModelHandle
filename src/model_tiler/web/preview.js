@@ -30,7 +30,7 @@ export class Preview {
     triangles.forEach((tri,i)=>{
       const u=tri[1].map((v,j)=>v-tri[0][j]),v=tri[2].map((x,j)=>x-tri[0][j]);
       const n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];
-      const l=Math.hypot(...n)||1, shade=.4+.6*Math.abs((n[0]*.2+n[1]*.4+n[2]*.8)/l);
+      const l=Math.hypot(...n)||1, shade=this.data.unlit?1:.4+.6*Math.abs((n[0]*.2+n[1]*.4+n[2]*.8)/l);
       const col=objectIds[i]===id?[.3,.95,.8]:colors[i].slice(0,3).map(x=>x*(id?.35:1)*shade);
       tri.forEach(p=>values.push(...p.map((v,j)=>(v-center[j])*scale),...col));
     });

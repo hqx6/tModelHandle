@@ -1,0 +1,592 @@
+{
+  "draco": {
+    "task": "a92d1bff69184ed5a0accdf3c094cd77",
+    "report": {
+      "status": "completed",
+      "objects": 2,
+      "triangles": 24,
+      "tiles": [
+        {
+          "uri": "tiles/00000.b3dm",
+          "bytes": 3512,
+          "triangles": 24,
+          "sha256": "8aa3c43d1dbea0fb8bd298fe7529525360a39728afe1ac794a9f7c95e17d452a",
+          "lodLevel": 0,
+          "format": "b3dm",
+          "instanceGroups": 0,
+          "instances": 0,
+          "storedTriangles": 24
+        }
+      ],
+      "options": {
+        "longitude": 116.39123,
+        "latitude": 39.90691,
+        "height": 100,
+        "mode": "small",
+        "max_triangles": 50000,
+        "max_depth": 8,
+        "visible_pixels": 25,
+        "double_sided": true,
+        "unlit": true,
+        "alpha_mode": "auto",
+        "alpha_cutoff": 0.5,
+        "origin": "original",
+        "property_fields": null,
+        "max_tile_bytes": 0,
+        "draco": true,
+        "draco_level": 7,
+        "draco_bits": 14,
+        "instance_min_count": 0,
+        "lod_ratio": 0.5,
+        "lod_levels": 2
+      },
+      "warnings": [],
+      "oversizedTiles": [],
+      "originOffset": [
+        0,
+        0,
+        0
+      ],
+      "lod": [],
+      "leafTriangles": 24,
+      "storedTriangles": 24,
+      "instancedObjects": 0,
+      "oversizedByteTiles": []
+    },
+    "encoded": [
+      {
+        "magic": "b3dm",
+        "extensions": [
+          "KHR_draco_mesh_compression"
+        ]
+      }
+    ],
+    "version": "1.123.1",
+    "triangles": 24,
+    "commands": 2,
+    "features": [
+      {
+        "id": "0d39786c-ba30-5693-9a9d-5c8e28907a7a",
+        "name": "主楼",
+        "楼层": "12",
+        "用途": "办公"
+      },
+      {
+        "id": "443fe6ae-79e8-5c9a-a8ab-9419c7c4b946",
+        "name": "附楼",
+        "楼层": "4",
+        "用途": "展览"
+      }
+    ],
+    "picked": [
+      "主楼",
+      "附楼"
+    ],
+    "pickedPositions": [
+      {
+        "name": "主楼",
+        "position": [
+          -2.064172139391303,
+          11.504635363584384,
+          35.950277445837855
+        ]
+      },
+      {
+        "name": "附楼",
+        "position": [
+          20.71136358892545,
+          11.845125095685944,
+          11.942176571115851
+        ]
+      }
+    ]
+  },
+  "i3dm": {
+    "task": "169a95bac7904a69acf9377ba08dcf7e",
+    "report": {
+      "status": "completed",
+      "objects": 4,
+      "triangles": 16,
+      "tiles": [
+        {
+          "uri": "tiles/00000.i3dm",
+          "bytes": 2152,
+          "triangles": 16,
+          "sha256": "9af67dc595c8516c0731df00dda5d07ce94f5424df2c39abc83f02f1cac7ae08",
+          "lodLevel": 0,
+          "format": "i3dm",
+          "instanceGroups": 1,
+          "instances": 4,
+          "storedTriangles": 4
+        }
+      ],
+      "options": {
+        "longitude": 116.39123,
+        "latitude": 39.90691,
+        "height": 100,
+        "mode": "small",
+        "max_triangles": 50000,
+        "max_depth": 8,
+        "visible_pixels": 25,
+        "double_sided": true,
+        "unlit": true,
+        "alpha_mode": "auto",
+        "alpha_cutoff": 0.5,
+        "origin": "original",
+        "property_fields": null,
+        "max_tile_bytes": 0,
+        "draco": true,
+        "draco_level": 7,
+        "draco_bits": 14,
+        "instance_min_count": 2,
+        "lod_ratio": 0.5,
+        "lod_levels": 2
+      },
+      "warnings": [],
+      "oversizedTiles": [],
+      "originOffset": [
+        0,
+        0,
+        0
+      ],
+      "lod": [],
+      "leafTriangles": 16,
+      "storedTriangles": 4,
+      "instancedObjects": 4,
+      "oversizedByteTiles": []
+    },
+    "encoded": [
+      {
+        "magic": "i3dm",
+        "extensions": [
+          "KHR_draco_mesh_compression"
+        ]
+      }
+    ],
+    "version": "1.123.1",
+    "triangles": 4,
+    "commands": 1,
+    "features": [
+      {
+        "id": "e71fb159-40c2-5cba-b02f-3f74506d3179",
+        "name": "instance-one",
+        "usage": "first"
+      },
+      {
+        "id": "fd9ad291-5a00-5136-a382-81887a17a39d",
+        "name": "instance-two",
+        "usage": "second"
+      },
+      {
+        "id": "ba7bed63-d275-5c31-9339-8d2ef560a19a",
+        "name": "instance-three",
+        "usage": "third"
+      },
+      {
+        "id": "f056f206-cbe1-5461-8b4e-ce45ed4898ba",
+        "name": "instance-four",
+        "usage": "fourth"
+      }
+    ],
+    "picked": [
+      "instance-four",
+      "instance-one",
+      "instance-three",
+      "instance-two"
+    ],
+    "pickedPositions": [
+      {
+        "name": "instance-four",
+        "position": [
+          24.941513889934868,
+          25.457629795419052,
+          10.386218125931919
+        ]
+      },
+      {
+        "name": "instance-three",
+        "position": [
+          0.12797662941738963,
+          25.00092288129963,
+          11.483010794967413
+        ]
+      },
+      {
+        "name": "instance-two",
+        "position": [
+          24.95150551246479,
+          0.8078327842522413,
+          10.750417833216488
+        ]
+      },
+      {
+        "name": "instance-one",
+        "position": [
+          -0.04498172365128994,
+          3.174528512870893,
+          6.812313177622855
+        ]
+      }
+    ]
+  },
+  "transformed": {
+    "task": "5b7c029fe6ae478bbb47c1352b71a490",
+    "report": {
+      "status": "completed",
+      "objects": 4,
+      "triangles": 16,
+      "tiles": [
+        {
+          "uri": "tiles/00000.i3dm",
+          "bytes": 2152,
+          "triangles": 16,
+          "sha256": "bf8ce63091251a75c66f7aafc0af70541fdec17863801773f5c4cb9bd30d0eac",
+          "lodLevel": 0,
+          "format": "i3dm",
+          "instanceGroups": 1,
+          "instances": 4,
+          "storedTriangles": 4
+        }
+      ],
+      "options": {
+        "longitude": 116.39123,
+        "latitude": 39.90691,
+        "height": 100,
+        "mode": "small",
+        "max_triangles": 50000,
+        "max_depth": 8,
+        "visible_pixels": 25,
+        "double_sided": true,
+        "unlit": true,
+        "alpha_mode": "auto",
+        "alpha_cutoff": 0.5,
+        "origin": "original",
+        "property_fields": null,
+        "max_tile_bytes": 0,
+        "draco": true,
+        "draco_level": 7,
+        "draco_bits": 14,
+        "instance_min_count": 2,
+        "lod_ratio": 0.5,
+        "lod_levels": 2
+      },
+      "warnings": [],
+      "oversizedTiles": [],
+      "originOffset": [
+        0,
+        0,
+        0
+      ],
+      "lod": [],
+      "leafTriangles": 16,
+      "storedTriangles": 4,
+      "instancedObjects": 4,
+      "oversizedByteTiles": []
+    },
+    "encoded": [
+      {
+        "magic": "i3dm",
+        "extensions": [
+          "KHR_draco_mesh_compression"
+        ]
+      }
+    ],
+    "version": "1.123.1",
+    "triangles": 4,
+    "commands": 1,
+    "features": [
+      {
+        "id": "b0d2ffe1-c724-55fb-b4f0-e5df69f2e22a",
+        "name": "instance-1",
+        "用途": "实例1"
+      },
+      {
+        "id": "46ad6b9a-4774-5dbd-b80c-28ab8e731c59",
+        "name": "instance-2",
+        "用途": "实例2"
+      },
+      {
+        "id": "d9e9e37a-add1-52aa-aba8-1ca0f10b30ec",
+        "name": "instance-3",
+        "用途": "实例3"
+      },
+      {
+        "id": "7d7af0d2-21b1-5c77-adb0-23cbf83903d7",
+        "name": "instance-4",
+        "用途": "实例4"
+      }
+    ],
+    "picked": [
+      "instance-3",
+      "instance-4",
+      "instance-2",
+      "instance-1"
+    ],
+    "pickedPositions": [
+      {
+        "name": "instance-3",
+        "position": [
+          -1.0252049278933555,
+          25.373109973734245,
+          22.22677321266383
+        ]
+      },
+      {
+        "name": "instance-4",
+        "position": [
+          24.351593918399885,
+          25.829695934662595,
+          4.196262021549046
+        ]
+      },
+      {
+        "name": "instance-2",
+        "position": [
+          24.81930000684224,
+          0.20813453826121986,
+          11.093325840309262
+        ]
+      },
+      {
+        "name": "instance-1",
+        "position": [
+          -0.0640262293163687,
+          2.7591099597048014,
+          7.793452547863126
+        ]
+      }
+    ]
+  },
+  "fbx": {
+    "task": "596315c0ac434dc983410cee6e680322",
+    "report": {
+      "status": "completed",
+      "objects": 1,
+      "triangles": 2,
+      "tiles": [
+        {
+          "uri": "tiles/00000.b3dm",
+          "bytes": 1536,
+          "triangles": 2,
+          "sha256": "522cc8681c36951ebd01e461582a28c4f72f3381cf5a8ce447367d00d8bcea57",
+          "lodLevel": 0,
+          "format": "b3dm",
+          "instanceGroups": 0,
+          "instances": 0,
+          "storedTriangles": 2
+        }
+      ],
+      "options": {
+        "longitude": 116.39123,
+        "latitude": 39.90691,
+        "height": 100,
+        "mode": "small",
+        "max_triangles": 50000,
+        "max_depth": 8,
+        "visible_pixels": 25,
+        "double_sided": true,
+        "unlit": true,
+        "alpha_mode": "auto",
+        "alpha_cutoff": 0.5,
+        "origin": "original",
+        "property_fields": null,
+        "max_tile_bytes": 0,
+        "draco": true,
+        "draco_level": 7,
+        "draco_bits": 14,
+        "instance_min_count": 0,
+        "lod_ratio": 0.5,
+        "lod_levels": 2
+      },
+      "warnings": [],
+      "oversizedTiles": [],
+      "originOffset": [
+        0,
+        0,
+        0
+      ],
+      "lod": [],
+      "leafTriangles": 2,
+      "storedTriangles": 2,
+      "instancedObjects": 0,
+      "oversizedByteTiles": []
+    },
+    "encoded": [
+      {
+        "magic": "b3dm",
+        "extensions": [
+          "KHR_draco_mesh_compression"
+        ]
+      }
+    ],
+    "version": "1.123.1",
+    "triangles": 2,
+    "commands": 1,
+    "features": [
+      {
+        "id": "f42ad362-94f4-5abb-9a40-84f5dcc1723e",
+        "name": "Quad"
+      }
+    ],
+    "picked": [
+      "Quad"
+    ],
+    "pickedPositions": [
+      {
+        "name": "Quad",
+        "position": [
+          11.510830049403012,
+          24.3896879858803,
+          32.959024829789996
+        ]
+      }
+    ]
+  },
+  "simplify": {
+    "task": "83a77544a14847fe85009710eb204d28",
+    "report": {
+      "status": "completed",
+      "objects": 1,
+      "triangles": 512,
+      "tiles": [
+        {
+          "uri": "tiles/00000.b3dm",
+          "bytes": 8656,
+          "triangles": 512,
+          "sha256": "419773323887c2176cb32e84a6a57ac780957f6299938f9ffe2254c4adf6d379",
+          "lodLevel": 0,
+          "format": "b3dm",
+          "instanceGroups": 0,
+          "instances": 0,
+          "storedTriangles": 512
+        },
+        {
+          "uri": "tiles/00001.b3dm",
+          "bytes": 4248,
+          "triangles": 128,
+          "sha256": "a68e30bcd7548303987c6e23c6148dfe90b67e52b3278b2ffe132c2b7f7d2833",
+          "lodLevel": 1,
+          "format": "b3dm",
+          "instanceGroups": 0,
+          "instances": 0,
+          "storedTriangles": 128
+        },
+        {
+          "uri": "tiles/00002.b3dm",
+          "bytes": 3344,
+          "triangles": 64,
+          "sha256": "22d26c891b02cc103d858151d792ff3f22ebc3ddc3848b1937192aaffdcc8f35",
+          "lodLevel": 2,
+          "format": "b3dm",
+          "instanceGroups": 0,
+          "instances": 0,
+          "storedTriangles": 64
+        }
+      ],
+      "options": {
+        "longitude": 116.39123,
+        "latitude": 39.90691,
+        "height": 100,
+        "mode": "simplify",
+        "max_triangles": 50000,
+        "max_depth": 8,
+        "visible_pixels": 25,
+        "double_sided": true,
+        "unlit": true,
+        "alpha_mode": "auto",
+        "alpha_cutoff": 0.5,
+        "origin": "original",
+        "property_fields": null,
+        "max_tile_bytes": 0,
+        "draco": true,
+        "draco_level": 7,
+        "draco_bits": 14,
+        "instance_min_count": 0,
+        "lod_ratio": 0.25,
+        "lod_levels": 2
+      },
+      "warnings": [
+        "化简模式的最高精度层保留全部几何；带纹理、接缝、多材质和无法安全化简的构件保留原网格，实际化简比例记录在 lod 中"
+      ],
+      "oversizedTiles": [],
+      "originOffset": [
+        0,
+        0,
+        0
+      ],
+      "lod": [
+        {
+          "algorithm": "quadric-edge-collapse",
+          "requestedRatio": 0.25,
+          "inputTriangles": 512,
+          "outputTriangles": 128,
+          "simplifiedComponents": 1,
+          "preservedComponents": 0,
+          "preservedReasons": {},
+          "errorMethod": "component-aabb-diagonal-bound",
+          "achievedRatio": 0.25,
+          "level": 1
+        },
+        {
+          "algorithm": "quadric-edge-collapse",
+          "requestedRatio": 0.0625,
+          "inputTriangles": 512,
+          "outputTriangles": 64,
+          "simplifiedComponents": 1,
+          "preservedComponents": 0,
+          "preservedReasons": {},
+          "errorMethod": "component-aabb-diagonal-bound",
+          "achievedRatio": 0.125,
+          "level": 2
+        }
+      ],
+      "leafTriangles": 512,
+      "storedTriangles": 704,
+      "instancedObjects": 0,
+      "oversizedByteTiles": []
+    },
+    "encoded": [
+      {
+        "magic": "b3dm",
+        "extensions": [
+          "KHR_draco_mesh_compression"
+        ]
+      },
+      {
+        "magic": "b3dm",
+        "extensions": [
+          "KHR_draco_mesh_compression"
+        ]
+      },
+      {
+        "magic": "b3dm",
+        "extensions": [
+          "KHR_draco_mesh_compression"
+        ]
+      }
+    ],
+    "version": "1.123.1",
+    "triangles": 512,
+    "commands": 1,
+    "features": [
+      {
+        "id": "522ab1db-a69a-5dd4-95c0-b6e76b98fa02",
+        "name": "terrain"
+      }
+    ],
+    "picked": [
+      "terrain"
+    ],
+    "pickedPositions": [
+      {
+        "name": "terrain",
+        "position": [
+          14.265438178554177,
+          15.558414488332346,
+          -0.04431742336601019
+        ]
+      }
+    ],
+    "farTriangles": 64
+  }
+}

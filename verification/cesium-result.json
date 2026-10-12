@@ -2,12 +2,12 @@
   "version": "1.123.1",
   "features": [
     {
-      "id": "a85addcd-2823-5f4c-aa95-37231cc63c7f",
+      "id": "443fe6ae-79e8-5c9a-a8ab-9419c7c4b946",
       "name": "附楼",
       "usage": "展览"
     },
     {
-      "id": "acfa232d-c254-51fa-ba2d-ee8dd98fc615",
+      "id": "0d39786c-ba30-5693-9a9d-5c8e28907a7a",
       "name": "主楼",
       "usage": "办公"
     }

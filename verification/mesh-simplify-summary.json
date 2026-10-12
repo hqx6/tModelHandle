@@ -1,0 +1,492 @@
+{
+  "projectionOfEvidence": "ev_3a65ce8c5820849a291caab4b04326b7d6f60f95a75aca9cfbaaf5f37ad02f74",
+  "subject": {
+    "name": "C:\\Users\\tongtu\\Downloads\\cesiumlab4_4.0.17\\EarthVisLabApps\\cesiumlab\\4.0.17\\bin\\XbsjMeshSimply.dll",
+    "digest": {
+      "sha256": "497e9e5b724516cd4bf5b368521f3ba6af12f3465aba54659672597ff3db8872"
+    },
+    "format": "pe",
+    "architecture": "x86_64",
+    "local_path": "C:\\Users\\tongtu\\Downloads\\cesiumlab4_4.0.17\\EarthVisLabApps\\cesiumlab\\4.0.17\\bin\\XbsjMeshSimply.dll"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "operation": "analyze_function",
+  "procedure": {
+    "address": "0x18009d6c0",
+    "name": "XBSJSIMPLY::ProxyProcesor::NaniteSimplify",
+    "classification": {
+      "external": false,
+      "thunk": false,
+      "thunk_target": null,
+      "provenance": "ghidra-function-manager"
+    },
+    "body": {
+      "available": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "start": "0x18009d6c0",
+          "end": "0x18009db82"
+        },
+        {
+          "start": "0x18009db84",
+          "end": "0x18009db89"
+        },
+        {
+          "start": "0x18009db8b",
+          "end": "0x18009db90"
+        },
+        {
+          "start": "0x18009db92",
+          "end": "0x18009e3df"
+        },
+        {
+          "start": "0x18009e3e1",
+          "end": "0x18009e5f4"
+        },
+        {
+          "start": "0x18009e5f6",
+          "end": "0x18009e62d"
+        },
+        {
+          "start": "0x18009e62f",
+          "end": "0x18009e7dc"
+        },
+        {
+          "start": "0x18009e7de",
+          "end": "0x18009e891"
+        },
+        {
+          "start": "0x18009e893",
+          "end": "0x18009e8ae"
+        },
+        {
+          "start": "0x18009e8b0",
+          "end": "0x18009e8b5"
+        },
+        {
+          "start": "0x18009e8b7",
+          "end": "0x18009eb15"
+        },
+        {
+          "start": "0x18009eb17",
+          "end": "0x18009eb1c"
+        },
+        {
+          "start": "0x18009eb1e",
+          "end": "0x18009eb23"
+        },
+        {
+          "start": "0x18009eb25",
+          "end": "0x18009eb29"
+        },
+        {
+          "start": "0x18009eb2b",
+          "end": "0x18009eb36"
+        },
+        {
+          "start": "0x18009eb38",
+          "end": "0x18009eb3c"
+        }
+      ],
+      "total_bytes": 5230,
+      "span_bytes": 5245,
+      "non_contiguous": true,
+      "contains_entry": true
+    },
+    "signature": "vector<std::vector<std::shared_ptr<XBSJ::ProxyMesh>,std::allocator<std::shared_ptr<XBSJ::ProxyMesh>_>_>,std::allocator<std::vector<std::shared_ptr<XBSJ::ProxyMesh>,std::allocator<std::shared_ptr<XBSJ::ProxyMesh>_>_>_>_> __cdecl NaniteSimplify(list<std::shared_ptr<XBSJ::ProxyMesh>,std::allocator<std::shared_ptr<XBSJ::ProxyMesh>_>_> * param_1, SimplifyOption * param_2, basic_string<char,std::char_traits<char>,std::allocator<char>_> param_3, basic_string<char,std::char_traits<char>,std::allocator<char>_> param_4, basic_string<char,std::char_traits<char>,std::allocator<char>_> param_5, bool param_6, bool param_7)"
+  },
+  "referencedStrings": [
+    {
+      "address": "0x18028a4a0",
+      "value": "all meshes are DegenerateTris!!!",
+      "source_address": "0x18009da63"
+    },
+    {
+      "address": "0x18028a4c8",
+      "value": "ReCluster",
+      "source_address": "0x18009dbf6"
+    },
+    {
+      "address": "0x18028a4c8",
+      "value": "ReCluster",
+      "source_address": "0x18009dc06"
+    },
+    {
+      "address": "0x18028a4d8",
+      "value": "NaniteSimplify",
+      "source_address": "0x18009e8d6"
+    },
+    {
+      "address": "0x18028a560",
+      "value": "list too long",
+      "source_address": "0x18009eb2b"
+    }
+  ],
+  "callees": [
+    {
+      "address": "EXTERNAL:0x88",
+      "name": "MSVCP140.DLL::std::basic_ostream<char,std::char_traits<char>_>::operator<<",
+      "classification": {
+        "external": true,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "EXTERNAL:0xbf",
+      "name": "API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn",
+      "classification": {
+        "external": true,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180008e40",
+      "name": "FUN_180008e40",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18000db80",
+      "name": "FUN_18000db80",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18000dc30",
+      "name": "FUN_18000dc30",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18000dec0",
+      "name": "deallocate",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18000df10",
+      "name": "FUN_18000df10",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18000e100",
+      "name": "FUN_18000e100",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1800124f0",
+      "name": "FUN_1800124f0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1800176c0",
+      "name": "FUN_1800176c0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1800331b0",
+      "name": "FUN_1800331b0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180033320",
+      "name": "FUN_180033320",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180036750",
+      "name": "FUN_180036750",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18003fdf0",
+      "name": "FUN_18003fdf0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180051340",
+      "name": "FUN_180051340",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180054000",
+      "name": "FUN_180054000",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180086d20",
+      "name": "FUN_180086d20",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18008c940",
+      "name": "FUN_18008c940",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18008cd10",
+      "name": "FUN_18008cd10",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18008ce10",
+      "name": "FUN_18008ce10",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18009a410",
+      "name": "FUN_18009a410",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18009eb40",
+      "name": "FUN_18009eb40",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1800a3120",
+      "name": "FUN_1800a3120",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1800bc550",
+      "name": "FUN_1800bc550",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1800bf780",
+      "name": "FUN_1800bf780",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18024f7e0",
+      "name": "FUN_18024f7e0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x18024f9c0",
+      "name": "FUN_18024f9c0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1802722c8",
+      "name": "MSVCP140.DLL::std::_Xlength_error",
+      "classification": {
+        "external": false,
+        "thunk": true,
+        "thunk_target": "EXTERNAL:0x62",
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180272c40",
+      "name": "FUN_180272c40",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180272c7c",
+      "name": "API-MS-WIN-CRT-HEAP-L1-1-0.DLL::free",
+      "classification": {
+        "external": false,
+        "thunk": true,
+        "thunk_target": "0x180273d6c",
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x180273180",
+      "name": "__security_check_cookie",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1802740d8",
+      "name": "VCRUNTIME140.DLL::memcpy",
+      "classification": {
+        "external": false,
+        "thunk": true,
+        "thunk_target": "EXTERNAL:0x9f",
+        "provenance": "ghidra-function-manager"
+      }
+    },
+    {
+      "address": "0x1802740e4",
+      "name": "VCRUNTIME140.DLL::memset",
+      "classification": {
+        "external": false,
+        "thunk": true,
+        "thunk_target": "EXTERNAL:0xa1",
+        "provenance": "ghidra-function-manager"
+      }
+    }
+  ],
+  "limitations": [
+    "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+    "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+    "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+    "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+    "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+    "Ghidra Listing reports a terminal call at 0x18009db7d to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009db84 to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009db8b to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009e3da to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009e5ef to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009e628 to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009e7d7 to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009e88c to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009e8a9 to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009e8b0 to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009eb10 to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009eb17 to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009eb1e to EXTERNAL:0xbf API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL::_invalid_parameter_noinfo_noreturn (external=true, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009eb25 to 0x18000dc30 FUN_18000dc30 (external=false, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009eb32 to 0x1802722c8 MSVCP140.DLL::std::_Xlength_error (external=false, thunk=true, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Ghidra Listing reports a terminal call at 0x18009eb38 to 0x18000db80 FUN_18000db80 (external=false, thunk=false, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+    "Windows Ghidra P0 accepts approved native x86 and x86-64 PE applications and DLLs; managed, hostile, sensitive, and mutable-path targets are unsupported.",
+    "The Windows bridge uses authenticated IPv4 loopback because Node path-based IPC does not expose Java AF_UNIX sockets; the endpoint file contains no bearer token.",
+    "Windows sessions require the matching packaged Windows x64 native addon, local NTFS targets and runtimes, and Windows 10 or later. Native handles enforce path admission, private DACLs, and Job Object ownership automatically."
+  ]
+}

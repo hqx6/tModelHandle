@@ -146,5 +146,90 @@ class TilerTests(unittest.TestCase):
                     store.create({"files":[{"name":name,"data":""}]})
         finally:store.pool.shutdown()
 
+    def test_gbk_and_reversed_winding_with_explicit_normals(self):
+        (self.root/'材质.mtl').write_text('newmtl 墙\nKd 1 0 0\n',encoding='gbk')
+        path=self.root/'gbk.obj'
+        path.write_text('mtllib 材质.mtl\no 主楼\nv 0 0 0\nv 1 0 0\nv 0 1 0\nvn 0 0 1\nusemtl 墙\nf 1//1 2//1 3//1\n',encoding='gbk')
+        s=import_scene([path],encoding='gbk',reverse_winding=True)
+        self.assertEqual(s['objects'][0]['name'],'主楼')
+        t=s['objects'][0]['triangles'][0]
+        self.assertEqual(t['p'],[[0,1,0],[1,0,0],[0,0,0]])
+        self.assertEqual(t['n'],[[0,0,-1]]*3)
+        implicit=self.root/'implicit.obj'
+        implicit.write_text('v 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n')
+        self.assertEqual(import_scene([implicit],reverse_winding=True)['objects'][0]['triangles'][0]['n'],[[0,0,-1]]*3)
+
+    def test_unlit_alpha_and_property_selection_in_actual_b3dm(self):
+        for mode in ('OPAQUE','MASK','BLEND'):
+            tile_scene(self.scene,self.root/mode,Options(unlit=True,alpha_mode=mode,alpha_cutoff=.3,property_fields=[]))
+            ft,bt,doc,values=decode_tile(next((self.root/mode/'tiles').glob('*.b3dm')).read_bytes())
+            self.assertEqual(set(bt),{'id','name'})
+            self.assertEqual(doc['extensionsUsed'],['KHR_materials_unlit'])
+            for m in doc['materials']:
+                self.assertEqual(m['alphaMode'],mode)
+                self.assertIn('KHR_materials_unlit',m['extensions'])
+                if mode=='MASK': self.assertEqual(m['alphaCutoff'],.3)
+            tree=json.loads((self.root/mode/'scenetree.json').read_text())
+            self.assertTrue(all(c['properties']=={} for s in tree['scenes'] for c in s['children']))
+        tile_scene(self.scene,self.root/'selected',Options(property_fields=['用途']))
+        self.assertEqual(set(decode_tile(next((self.root/'selected/tiles').glob('*.b3dm')).read_bytes())[1]),{'id','name','用途'})
+        self.assertIn('用途',self.scene['objects'][0]['properties'])
+
+    def test_center_origin_preserves_world_position_and_resource(self):
+        before=json.dumps(self.scene)
+        tile_scene(self.scene,self.root/'original')
+        report=tile_scene(self.scene,self.root/'center',Options(origin='center'))
+        self.assertNotEqual(report['originOffset'],[0,0,0])
+        self.assertEqual(before,json.dumps(self.scene))
+        def world_points(folder):
+            m=json.loads((folder/'tileset.json').read_text())['root']['transform']
+            points=[]
+            for file in (folder/'tiles').glob('*.b3dm'):
+                _,_,doc,values=decode_tile(file.read_bytes())
+                for primitive in doc['meshes'][0]['primitives']:
+                    v=values(primitive['attributes']['POSITION'])
+                    for i in range(0,len(v),3):
+                        enu=[v[i],-v[i+2],v[i+1]]
+                        points.append([m[12+a]+sum(m[4*j+a]*enu[j] for j in range(3)) for a in range(3)])
+            return points
+        for a,b in zip(world_points(self.root/'original'),world_points(self.root/'center')):
+            for x,y in zip(a,b): self.assertAlmostEqual(x,y,places=6)
+        a=json.loads((self.root/'original/scenetree.json').read_text(encoding='utf-8'))
+        b=json.loads((self.root/'center/scenetree.json').read_text(encoding='utf-8'))
+        for x,y in zip(a['scenes'][0]['children'],b['scenes'][0]['children']):
+            for p,q in zip(x['sphere'],y['sphere']): self.assertAlmostEqual(p,q,places=6)
+
+    def test_actual_byte_budget_and_unavoidable_overflow(self):
+        report=tile_scene(self.scene,self.root/'budget',Options(max_tile_bytes=4500,max_depth=16))
+        self.assertGreater(len(report['tiles']),1)
+        self.assertEqual(sum(t['triangles'] for t in report['tiles']),24)
+        self.assertTrue(all(t['bytes']<=4500 for t in report['tiles']))
+        report=tile_scene(self.scene,self.root/'overflow',Options(max_tile_bytes=1,max_depth=2))
+        self.assertEqual(len(report['oversizedByteTiles']),len(report['tiles']))
+        self.assertTrue(report['warnings'])
+
+    def test_task_resource_reuse_without_upload_and_restart(self):
+        store=TaskStore(self.root/'tasks')
+        files=[{'name':name,'data':base64.b64encode((DEMO/name).read_bytes()).decode()} for name in ('demo.obj','demo.mtl','demo.csv')]
+        first=store.create({'files':files})
+        store.pool.shutdown()
+        self.assertEqual(store.tasks[first['id']]['status'],'completed')
+        before=(store.root/first['id']/'resource.json').read_bytes()
+        store=TaskStore(self.root/'tasks')
+        try:
+            with self.assertRaises(ValueError): store.create({'resourceTask':'../outside'})
+            with self.assertRaises(ValueError): store.create({'resourceTask':first['id'],'files':files})
+            second=store.create({'resourceTask':first['id'],'options':{'mode':'octree','unlit':True,'property_fields':[],'origin':'center'}})
+        finally: store.pool.shutdown()
+        result=store.tasks[second['id']]
+        self.assertEqual(result['status'],'completed',result)
+        self.assertEqual(result['report']['triangles'],24)
+        self.assertEqual((store.root/second['id']/'resource.json').read_bytes(),before)
+
+    def test_new_option_validation(self):
+        for settings in ({'alpha_mode':'bad'},{'alpha_cutoff':float('nan')},{'origin':'bad'},{'property_fields':'用途'},
+                         {'max_tile_bytes':-1},{'max_tile_bytes':1.5},{'unlit':'false'}):
+            with self.assertRaises(ValueError): Options(**settings).validate()
+
 
 if __name__=='__main__':unittest.main()

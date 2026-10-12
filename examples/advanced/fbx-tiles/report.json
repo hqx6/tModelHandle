@@ -1,0 +1,52 @@
+{
+  "status": "completed",
+  "objects": 1,
+  "triangles": 2,
+  "tiles": [
+    {
+      "uri": "tiles/00000.b3dm",
+      "bytes": 1472,
+      "triangles": 2,
+      "sha256": "acb4081e8b5aa5c397bce68a806deb3ca86b1236e95fba421d69a71dcb9e75aa",
+      "lodLevel": 0,
+      "format": "b3dm",
+      "instanceGroups": 0,
+      "instances": 0,
+      "storedTriangles": 2
+    }
+  ],
+  "options": {
+    "longitude": 116.39123,
+    "latitude": 39.90691,
+    "height": 100,
+    "mode": "small",
+    "max_triangles": 50000,
+    "max_depth": 8,
+    "visible_pixels": 25,
+    "double_sided": false,
+    "unlit": false,
+    "alpha_mode": "auto",
+    "alpha_cutoff": 0.5,
+    "origin": "original",
+    "property_fields": null,
+    "max_tile_bytes": 0,
+    "draco": true,
+    "draco_level": 7,
+    "draco_bits": 14,
+    "instance_min_count": 0,
+    "lod_ratio": 0.5,
+    "lod_levels": 2
+  },
+  "warnings": [],
+  "oversizedTiles": [],
+  "originOffset": [
+    0,
+    0,
+    0
+  ],
+  "lod": [],
+  "leafTriangles": 2,
+  "storedTriangles": 2,
+  "instancedObjects": 0,
+  "oversizedByteTiles": []
+}

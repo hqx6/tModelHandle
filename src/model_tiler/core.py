@@ -42,9 +42,9 @@ def safe_asset(root, name):
     return path
 
 
-def materials(path):
+def materials(path, encoding="utf-8-sig"):
     result, current = {}, None
-    for line in path.read_text(encoding="utf-8-sig").splitlines():
+    for line in path.read_text(encoding=encoding).splitlines():
         fields = shlex.split(line, comments=True, posix=True)
         if not fields:
             continue
@@ -106,7 +106,10 @@ def triangulate(corners, positions):
     return result
 
 
-def import_scene(inputs, up_axis="Z", scale=1.0, properties=None, check=lambda: None):
+def import_scene(inputs, up_axis="Z", scale=1.0, properties=None, check=lambda: None,
+                 encoding="utf-8-sig", reverse_winding=False):
+    if encoding not in ("utf-8-sig", "gbk") or not isinstance(reverse_winding, bool):
+        raise ValueError("编码应为 UTF-8 或 GBK，翻转绕向应为布尔值")
     finite([scale])
     if scale <= 0 or up_axis not in ("Y", "Z"):
         raise ValueError("单位比例必须大于 0，上轴必须为 Y 或 Z")
@@ -125,8 +128,15 @@ def import_scene(inputs, up_axis="Z", scale=1.0, properties=None, check=lambda: 
     for input_number, input_path in enumerate(inputs):
         check()
         path = Path(input_path).resolve()
+        if path.suffix.lower() == ".fbx":
+            from .fbx import import_fbx
+            imported = import_fbx(path,input_number,up_axis,scale,extras,check,reverse_winding)
+            scene['objects'].extend(imported['objects'])
+            scene['materials'].update(imported['materials'])
+            scene['sources'].append(imported['source'])
+            continue
         if path.suffix.lower() != ".obj":
-            raise ValueError("当前实现支持 OBJ + MTL；FBX/CLM/SHP 尚未实现")
+            raise ValueError("支持 OBJ + MTL 与静态 FBX；CLM/SHP 尚未实现")
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         scene["sources"].append({"name": path.name, "sha256": digest, "index": input_number})
         positions, normals, uvs, groups = [], [], [], {}
@@ -143,7 +153,7 @@ def import_scene(inputs, up_axis="Z", scale=1.0, properties=None, check=lambda: 
             if value == 0 or not 0 <= i < len(sequence):
                 raise ValueError("OBJ 索引越界")
             return i
-        for line_number, line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
+        for line_number, line in enumerate(path.read_text(encoding=encoding).splitlines(), 1):
             if line_number % 1000 == 0:
                 check()
             fields = line.partition("#")[0].strip().split()
@@ -166,7 +176,7 @@ def import_scene(inputs, up_axis="Z", scale=1.0, properties=None, check=lambda: 
                     material = " ".join(args)
                 elif key == "mtllib":
                     for file in shlex.split(line[len(key):].strip()):
-                        scene["materials"].update({f"{input_number}:{k}": v for k,v in materials(safe_asset(path.parent, file)).items()})
+                        scene["materials"].update({f"{input_number}:{k}": v for k,v in materials(safe_asset(path.parent, file), encoding).items()})
                 elif key == "f":
                     corners = []
                     for token in args:
@@ -176,6 +186,8 @@ def import_scene(inputs, up_axis="Z", scale=1.0, properties=None, check=lambda: 
                     obj = groups.setdefault(name, {"id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"{input_number}:{digest}:{name}")),
                                                  "name": name, "source": path.name, "sourceIndex": input_number, "properties": extras.get(name, {}), "triangles": []})
                     for face in triangulate(corners, positions):
+                        if reverse_winding:
+                            face = list(reversed(face))
                         vertices = [positions[c[0]] for c in face]
                         a,b,c = vertices
                         e1,e2 = [b[i]-a[i] for i in range(3)], [c[i]-a[i] for i in range(3)]
@@ -183,7 +195,7 @@ def import_scene(inputs, up_axis="Z", scale=1.0, properties=None, check=lambda: 
                         length = math.sqrt(sum(v*v for v in norm))
                         if length <= 1e-15:
                             raise ValueError("退化三角形")
-                        obj["triangles"].append({"p": vertices, "n": [normals[t[2]] if t[2] is not None else [v/length for v in norm] for t in face],
+                        obj["triangles"].append({"p": vertices, "n": [[v * (-1 if reverse_winding else 1) for v in normals[t[2]]] if t[2] is not None else [v/length for v in norm] for t in face],
                                                  "uv": [uvs[t[1]] if t[1] is not None else [0,0] for t in face], "material": f"{input_number}:{material}"})
                 elif key in ("l", "p", "curv", "surf"):
                     raise ValueError("仅支持多边形网格，不支持线、点或曲面")
@@ -225,7 +237,8 @@ def enu_transform(longitude, latitude, height):
             (n+height)*cp*cl,(n+height)*cp*sl,(n*(1-e2)+height)*sp,1]
 
 
-def glb(triangles, scene, double_sided=False):
+def glb(triangles, scene, double_sided=False, *, unlit=False, alpha_mode="auto", alpha_cutoff=0.5, property_fields=None,
+        draco=False, draco_level=7, draco_bits=14, include_batch_ids=True):
     objects = sorted({i for i,t in triangles})
     ids = {i: j for j,i in enumerate(objects)}
     data = bytearray()
@@ -257,6 +270,13 @@ def glb(triangles, scene, double_sided=False):
                  "pbrMetallicRoughness": {"baseColorFactor": mat["color"], "metallicFactor": 0, "roughnessFactor": 0.85}}
         if mat["color"][3] < 1:
             glmat["alphaMode"] = "BLEND"
+        if alpha_mode != "auto":
+            glmat["alphaMode"] = alpha_mode
+            if alpha_mode == "MASK":
+                glmat["alphaCutoff"] = alpha_cutoff
+        if unlit:
+            glmat["extensions"] = {"KHR_materials_unlit": {}}
+            doc["extensionsUsed"] = ["KHR_materials_unlit"]
         if "image" in mat:
             image = mat["image"]
             doc.setdefault("images", []).append({"bufferView": view(base64.b64decode(image["data"])), "mimeType": image["mime"]})
@@ -274,21 +294,26 @@ def glb(triangles, scene, double_sided=False):
                 normals.append([n[0]/length,n[2]/length,-n[1]/length])
             uv += [[u[0],1-u[1]] for u in t["uv"]]
             batch += [ids[obj]]*3
-        attrs = {"POSITION": accessor(positions,"VEC3"), "NORMAL": accessor(normals,"VEC3"),
-                 "TEXCOORD_0": accessor(uv,"VEC2"), "_BATCHID": accessor(batch,"SCALAR",5126)}
+        attrs = {"POSITION": accessor(positions,"VEC3"), "NORMAL": accessor(normals,"VEC3"), "TEXCOORD_0": accessor(uv,"VEC2")}
+        if include_batch_ids:
+            attrs['_BATCHID'] = accessor(batch,'SCALAR',5126)
         doc["meshes"][0]["primitives"].append({"attributes": attrs, "material": len(doc["materials"])-1, "mode": 4})
     doc["buffers"] = [{"byteLength": len(data)}]
     text = json.dumps(doc, separators=(",",":"), allow_nan=False).encode()
     text += b" "*((-len(text))%4)
     data.extend(b"\0"*((-len(data))%4))
     blob = struct.pack("<4sII",b"glTF",2,28+len(text)+len(data)) + struct.pack("<I4s",len(text),b"JSON") + text + struct.pack("<I4s",len(data),b"BIN\0") + data
-    props = [dict(scene["objects"][i]["properties"], id=scene["objects"][i]["id"], name=scene["objects"][i]["name"]) for i in objects]
+    if draco:
+        from .draco import compress_glb
+        blob = compress_glb(blob,draco_level,draco_bits)
+    props = [dict({k:v for k,v in scene["objects"][i]["properties"].items() if property_fields is None or k in property_fields},
+                  id=scene["objects"][i]["id"], name=scene["objects"][i]["name"]) for i in objects]
     keys = sorted({k for p in props for k in p})
     return blob, {key: [p.get(key) for p in props] for key in keys}, len(objects)
 
 
-def b3dm(triangles, scene, double_sided=False):
-    model, props, count = glb(triangles, scene, double_sided)
+def b3dm(triangles, scene, double_sided=False, **settings):
+    model, props, count = glb(triangles, scene, double_sided, **settings)
     ft = json.dumps({"BATCH_LENGTH": count}, separators=(",",":")).encode()
     ft += b" "*((-(28+len(ft)))%8)
     bt = json.dumps(props, ensure_ascii=False, separators=(",",":"), allow_nan=False).encode()
@@ -308,11 +333,43 @@ class Options:
     max_depth: int = 8
     visible_pixels: float = 25
     double_sided: bool = False
+    unlit: bool = False
+    alpha_mode: str = "auto"
+    alpha_cutoff: float = 0.5
+    origin: str = "original"
+    property_fields: list[str] | None = None
+    max_tile_bytes: int = 0
+    draco: bool = False
+    draco_level: int = 7
+    draco_bits: int = 14
+    instance_min_count: int = 0
+    lod_ratio: float = 0.5
+    lod_levels: int = 2
 
     def validate(self):
         enu_transform(self.longitude, self.latitude, self.height)
         finite([self.visible_pixels])
-        if self.mode not in ("small","octree") or not isinstance(self.max_triangles,int) or not 1 <= self.max_triangles <= 1000000:
+        finite([self.alpha_cutoff])
+        finite([self.lod_ratio])
+        if type(self.draco) is not bool or type(self.draco_level) is not int or not 0 <= self.draco_level <= 10:
+            raise ValueError("Draco 开关或压缩级别无效（0–10）")
+        if type(self.draco_bits) is not int or not 8 <= self.draco_bits <= 24:
+            raise ValueError("Draco 位置量化应为 8–24 位")
+        if type(self.instance_min_count) is not int or self.instance_min_count < 0 or self.instance_min_count == 1:
+            raise ValueError("实例复用阈值应为 0（关闭）或至少 2")
+        if not 0 < self.lod_ratio < 1 or type(self.lod_levels) is not int or not 1 <= self.lod_levels <= 4:
+            raise ValueError("LOD 保留比例应在 (0,1)，化简层数应为 1–4")
+        if self.alpha_mode not in ("auto", "OPAQUE", "MASK", "BLEND") or not 0 <= self.alpha_cutoff <= 1:
+            raise ValueError("透明模式无效，透明阈值应为 0–1")
+        if self.origin not in ("original", "center"):
+            raise ValueError("原点应为 original 或 center")
+        if not isinstance(self.double_sided,bool) or not isinstance(self.unlit,bool):
+            raise ValueError("材质开关应为布尔值")
+        if self.property_fields is not None and (not isinstance(self.property_fields,list) or any(not isinstance(k,str) or not k for k in self.property_fields)):
+            raise ValueError("属性字段应为字符串列表")
+        if type(self.max_tile_bytes) is not int or self.max_tile_bytes < 0:
+            raise ValueError("切片字节上限应为非负整数，0 表示不限制")
+        if self.mode not in ("small","octree","simplify") or not isinstance(self.max_triangles,int) or not 1 <= self.max_triangles <= 1000000:
             raise ValueError("处理模式或单片三角形阈值错误")
         if not isinstance(self.max_depth,int) or not 0 <= self.max_depth <= 16 or not 0 < self.visible_pixels <= 512:
             raise ValueError("深度应为 0–16，可见像素应为 (0,512]")
@@ -321,6 +378,14 @@ class Options:
 def tile_scene(scene, output, options=None, progress=lambda p,m: None, cancelled=lambda: False):
     options = options or Options()
     options.validate()
+    # Recenter output geometry without mutating the reusable resource or its world location.
+    original_faces = [(i,t) for i,obj in enumerate(scene["objects"]) for t in obj["triangles"]]
+    offset = [0,0,0]
+    if original_faces and options.origin == "center":
+        b = bounds(original_faces)
+        offset = [(b[0][a]+b[1][a])/2 for a in range(3)]
+        scene = dict(scene, objects=[dict(obj, triangles=[dict(t, p=[[p[a]-offset[a] for a in range(3)] for p in t["p"]])
+                                                        for t in obj["triangles"]]) for obj in scene["objects"]])
     output = Path(output).resolve()
     if output.exists():
         raise FileExistsError(f"输出目录已存在: {output}；请选择新目录")
@@ -335,26 +400,69 @@ def tile_scene(scene, output, options=None, progress=lambda p,m: None, cancelled
         raise ValueError("资源库中没有三角形")
     files, object_uris = [], {i: [] for i in range(len(scene["objects"]))}
     total, completed = len(all_faces), 0
-    def content(faces):
+    lod_stats = []
+    settings = dict(unlit=options.unlit,alpha_mode=options.alpha_mode,alpha_cutoff=options.alpha_cutoff,
+                    property_fields=options.property_fields,draco=options.draco,draco_level=options.draco_level,draco_bits=options.draco_bits)
+    def make_glb(faces,model_scene,**extra):
+        return glb(faces,model_scene,options.double_sided,**settings,**extra)
+    def encode(faces):
+        from .instances import group_instances,i3dm,cmpt
+        groups,remaining = group_instances(faces,scene,options.instance_min_count,check)
+        payloads = [i3dm(group,scene,options,make_glb) for group in groups]
+        if remaining:
+            payloads.append(b3dm(remaining,scene,options.double_sided,**settings))
+        kind = 'cmpt' if len(payloads)>1 else 'i3dm' if groups else 'b3dm'
+        data = cmpt(payloads) if len(payloads)>1 else payloads[0]
+        return dict(data=data,format=kind,instanceGroups=len(groups),instances=sum(len(g) for g in groups),
+                    storedTriangles=len(remaining)+sum(len(g[0][1]['triangles']) for g in groups))
+    def content(faces,payload=None,level=0):
         nonlocal completed
         check()
-        uri = f"tiles/{len(files):05d}.b3dm"
+        payload = payload or encode(faces)
+        uri = f"tiles/{len(files):05d}.{payload['format']}"
         dest = stage / uri
         dest.parent.mkdir(exist_ok=True)
-        data = b3dm(faces,scene,options.double_sided)
+        data = payload['data']
         dest.write_bytes(data)
-        files.append({"uri": uri, "bytes": len(data), "triangles": len(faces), "sha256": hashlib.sha256(data).hexdigest()})
+        files.append({"uri": uri, "bytes": len(data), "triangles": len(faces), "sha256": hashlib.sha256(data).hexdigest(),
+                      'lodLevel':level,**{k:v for k,v in payload.items() if k!='data'}})
         for i in {i for i,t in faces}:
             object_uris[i].append(uri)
         completed += len(faces)
-        progress(20 + int(completed/total*70), f"已写入 {len(files)} 个切片")
+        progress(min(90,20 + int(completed/total*70)), f"已写入 {len(files)} 个切片")
         return {"uri": uri}
+    def bounding_box(b):
+        if not options.draco:
+            return box(b)
+        # Cover position quantization and float32 instance/vertex rounding.
+        margin=math.dist(*b)/(2**options.draco_bits-1)+max(abs(v) for row in b for v in row)*2**-22+1e-6
+        return box([[v-margin for v in b[0]],[v+margin for v in b[1]]])
+    def compression_error(b):
+        return (math.dist(*b)/(2**options.draco_bits-1)+max(abs(v) for row in b for v in row)*2**-22+1e-6) if options.draco else 0
     def small(faces, depth=0):
         check()
         b = bounds(faces)
-        node = {"boundingVolume": {"box": box(b)}, "geometricError": 0, "refine": "ADD"}
-        if len(faces) <= options.max_triangles or depth >= options.max_depth:
-            node["content"] = content(faces)
+        node = {"boundingVolume": {"box": bounding_box(b)}, "geometricError": compression_error(b), "refine": "ADD"}
+        payload = encode(faces) if options.max_tile_bytes and len(faces)<=options.max_triangles else None
+        within_budget = len(faces) <= options.max_triangles and (not options.max_tile_bytes or len(payload['data']) <= options.max_tile_bytes)
+        if within_budget or depth >= options.max_depth or len(faces) == 1:
+            node["content"] = content(faces,payload)
+            if options.mode=='simplify':
+                from .simplify import simplify_faces
+                previous_count=len(faces)
+                for level in range(1,options.lod_levels+1):
+                    simplified,error,stats=simplify_faces(faces,scene,options.lod_ratio**level,check)
+                    stats['level']=level
+                    lod_stats.append(stats)
+                    if len(simplified)>=previous_count:
+                        continue
+                    coarse=encode(simplified)
+                    if options.max_tile_bytes and len(coarse['data'])>options.max_tile_bytes:
+                        stats['skippedByteBudget']=True
+                        continue
+                    node={'boundingVolume':{'box':bounding_box(b)},'geometricError':max(error*level,node['geometricError'],1e-3),
+                          'refine':'REPLACE','content':content(simplified,coarse,level),'children':[node]}
+                    previous_count=len(simplified)
         else:
             # Empty hierarchy nodes need a nonzero traversal error as well.
             # Their error represents omitting their full-resolution descendants.
@@ -363,6 +471,7 @@ def tile_scene(scene, output, options=None, progress=lambda p,m: None, cancelled
             ordered = sorted(faces, key=lambda it: sum(v[axis] for v in it[1]["p"])/3)
             middle = len(ordered)//2
             node["children"] = [small(ordered[:middle],depth+1), small(ordered[middle:],depth+1)]
+            node['geometricError']=max(node['geometricError'],max(c['geometricError'] for c in node['children']))
         return node
     obj_bounds = {i: bounds([(i,t) for t in obj["triangles"]]) for i,obj in enumerate(scene["objects"])}
     def octree(object_ids, depth=0):
@@ -380,10 +489,11 @@ def tile_scene(scene, output, options=None, progress=lambda p,m: None, cancelled
             else:
                 octant = sum((1<<a) for a in range(3) if (ob[0][a]+ob[1][a])/2 >= center[a])
                 buckets.setdefault(octant, []).append(i)
-        node = {"boundingVolume": {"box": box(b)}, "geometricError": side/512 if buckets else 0, "refine": "ADD"}
+        node = {"boundingVolume": {"box": bounding_box(b)}, "geometricError": max(side/512 if buckets else 0,compression_error(b)), "refine": "ADD"}
         if ready:
-            if len(ready) <= options.max_triangles:
-                node["content"] = content(ready)
+            payload=encode(ready) if options.max_tile_bytes and len(ready)<=options.max_triangles else None
+            if len(ready) <= options.max_triangles and (not options.max_tile_bytes or len(payload['data']) <= options.max_tile_bytes):
+                node["content"] = content(ready,payload)
             else:
                 node.setdefault("children", []).append(small(ready))
         node.setdefault("children", []).extend(octree(ids,depth+1) for _,ids in sorted(buckets.items()))
@@ -394,13 +504,20 @@ def tile_scene(scene, output, options=None, progress=lambda p,m: None, cancelled
         return node
     try:
         progress(20,"开始空间切片")
-        root = small(all_faces) if options.mode == "small" else octree(list(obj_bounds))
+        root = octree(list(obj_bounds)) if options.mode == "octree" else small(all_faces)
         transform = enu_transform(options.longitude, options.latitude, options.height)
+        for a in range(3):
+            transform[12+a] += sum(transform[4*j+a]*offset[j] for j in range(3))
         root["transform"] = transform
         whole_bounds = bounds(all_faces)
         # Tileset-level error is the error of displaying NOTHING. A zero value
         # makes Cesium cull the entire set before visiting even a perfect leaf.
-        tileset_error = max(1e-3, math.dist(*whole_bounds))
+        tileset_error = max(1e-3, math.dist(*whole_bounds),root['geometricError'])
+        if options.mode=='simplify':
+            # The implicit tileset parent must remain traversable while its
+            # coarsest root representation is being selected. Use a conservative
+            # omission error larger than the root's approximation error.
+            tileset_error *= 8
         tileset = {"asset": {"version": "1.0", "generator": "Independent model-tiler"}, "geometricError": tileset_error, "root": root}
         dump(stage/"tileset.json", tileset)
         def sphere(b):
@@ -409,7 +526,8 @@ def tile_scene(scene, output, options=None, progress=lambda p,m: None, cancelled
             return center+[math.hypot(value[3],value[7],value[11])]
         children = [{"type": "element", "id": obj["id"], "name": obj["name"], "source": obj["source"], "sourceIndex": obj.get("sourceIndex",0),
                      "boundingVolume": {"box": box(obj_bounds[i])}, "sphere": sphere(obj_bounds[i]),
-                     "properties": obj["properties"], "tiles": object_uris[i]} for i,obj in enumerate(scene["objects"])]
+                     "properties": {k:v for k,v in obj["properties"].items() if options.property_fields is None or k in options.property_fields},
+                     "tiles": object_uris[i]} for i,obj in enumerate(scene["objects"])]
         scenes = [{"type":"node", "name":s["name"], "children":[c for c in children if c["sourceIndex"]==s.get("index",0)]} for s in scene["sources"]]
         for s in scenes:
             faces=[(i,t) for i,obj in enumerate(scene["objects"]) if obj.get("sourceIndex",0)==s["children"][0]["sourceIndex"] for t in obj["triangles"]]
@@ -418,10 +536,21 @@ def tile_scene(scene, output, options=None, progress=lambda p,m: None, cancelled
         report = {"status": "completed", "objects": len(children), "triangles": total, "tiles": files, "options": vars(options),
                   "warnings": ["尺寸过滤模式使用构件大小控制加载层级，不做几何简化"] if options.mode == "octree" else [],
                   "oversizedTiles": [f["uri"] for f in files if f["triangles"] > options.max_triangles]}
+        report["originOffset"] = offset
+        report['lod']=lod_stats
+        report['leafTriangles']=sum(f['triangles'] for f in files if f['lodLevel']==0)
+        report['storedTriangles']=sum(f['storedTriangles'] for f in files)
+        report['instancedObjects']=sum(f['instances'] for f in files if f['lodLevel']==0)
+        if options.mode=='simplify':
+            report['warnings'].append('化简模式的最高精度层保留全部几何；带纹理、接缝、多材质和无法安全化简的构件保留原网格，实际化简比例记录在 lod 中')
+        report["oversizedByteTiles"] = [f["uri"] for f in files if options.max_tile_bytes and f["bytes"] > options.max_tile_bytes]
+        if report["oversizedByteTiles"]:
+            report["warnings"].append("部分切片达到深度上限或仅剩一个三角形，仍超过字节上限（纹理和属性也占空间）")
         dump(stage/"report.json", report)
         # Preview samples are derived from actual normalized geometry, never synthetic results.
         stride = max(1, math.ceil(total/50000))
         dump(stage/"preview.json", {"bounds": bounds(all_faces), "triangles": [t["p"] for _,t in all_faces[::stride]],
+                                   "unlit": options.unlit,
                                    "objectIds": [scene["objects"][i]["id"] for i,t in all_faces[::stride]],
                                    "colors": [scene["materials"][t["material"]]["color"] for _,t in all_faces[::stride]], "sampled": stride > 1})
         check()

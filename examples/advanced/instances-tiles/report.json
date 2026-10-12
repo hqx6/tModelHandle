@@ -1,0 +1,52 @@
+{
+  "status": "completed",
+  "objects": 4,
+  "triangles": 16,
+  "tiles": [
+    {
+      "uri": "tiles/00000.i3dm",
+      "bytes": 2096,
+      "triangles": 16,
+      "sha256": "154b239397c3942e4df33bd0dc5844da4d4d91ade725cfbcfb8b5595bd4ded99",
+      "lodLevel": 0,
+      "format": "i3dm",
+      "instanceGroups": 1,
+      "instances": 4,
+      "storedTriangles": 4
+    }
+  ],
+  "options": {
+    "longitude": 116.39123,
+    "latitude": 39.90691,
+    "height": 100,
+    "mode": "small",
+    "max_triangles": 50000,
+    "max_depth": 8,
+    "visible_pixels": 25,
+    "double_sided": false,
+    "unlit": false,
+    "alpha_mode": "auto",
+    "alpha_cutoff": 0.5,
+    "origin": "original",
+    "property_fields": null,
+    "max_tile_bytes": 0,
+    "draco": true,
+    "draco_level": 7,
+    "draco_bits": 14,
+    "instance_min_count": 2,
+    "lod_ratio": 0.5,
+    "lod_levels": 2
+  },
+  "warnings": [],
+  "oversizedTiles": [],
+  "originOffset": [
+    0,
+    0,
+    0
+  ],
+  "lod": [],
+  "leafTriangles": 16,
+  "storedTriangles": 4,
+  "instancedObjects": 4,
+  "oversizedByteTiles": []
+}

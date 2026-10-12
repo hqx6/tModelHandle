@@ -21,7 +21,7 @@ class TaskStore:
         self.lock = threading.Lock()
         self.pool = ThreadPoolExecutor(max_workers=1)
         for file in self.root.glob("*/task.json"):
-            task = json.loads(file.read_text())
+            task = json.loads(file.read_text(encoding="utf-8"))
             if task["status"] in ("queued","running"):
                 task.update(status="interrupted",message="服务重启中断了任务；请重新提交",progress=0)
                 dump(file,task)
@@ -40,9 +40,19 @@ class TaskStore:
             raise ValueError("任务请求必须是 JSON 对象")
         options = Options(**request.get("options",{}))
         options.validate()
+        resource_task = request.get("resourceTask")
+        resource = None
+        if resource_task is not None:
+            if not isinstance(resource_task,str) or resource_task not in self.tasks:
+                raise ValueError("资源任务不存在")
+            resource = self.root/resource_task/"resource.json"
+            if not resource.is_file():
+                raise ValueError("该任务没有可复用的资源库")
         inputs = request.get("files",[])
-        if not isinstance(inputs,list) or not inputs or len(inputs)>256:
+        if not isinstance(inputs,list) or (not inputs and resource is None) or len(inputs)>256:
             raise ValueError("请选择模型及依赖文件（最多 256 个文件）")
+        if resource is not None and inputs:
+            raise ValueError("复用资源库时无需上传文件")
         decoded, names = [], set()
         for file in inputs:
             if not isinstance(file,dict):
@@ -51,16 +61,20 @@ class TaskStore:
             p = PurePosixPath(name)
             if p.is_absolute() or any(x in ("..", "") for x in p.parts) or not p.parts or ":" in name or name in names:
                 raise ValueError("文件路径无效或重复")
-            if p.suffix.lower() not in (".obj",".mtl",".png",".jpg",".jpeg",".csv"):
-                raise ValueError("上传仅支持 OBJ/MTL/PNG/JPEG/CSV")
+            if p.suffix.lower() not in (".obj",".fbx",".mtl",".png",".jpg",".jpeg",".csv"):
+                raise ValueError("上传仅支持 OBJ/FBX/MTL/PNG/JPEG/CSV")
             names.add(name)
             decoded.append((name,base64.b64decode(file["data"],validate=True)))
-        if not any(name.lower().endswith(".obj") for name,_ in decoded):
-            raise ValueError("至少选择一个 OBJ 文件")
+        if resource is None and not any(name.lower().endswith((".obj",".fbx")) for name,_ in decoded):
+            raise ValueError("至少选择一个 OBJ 或 FBX 文件")
         csvs = [name for name,_ in decoded if name.lower().endswith(".csv")]
         if len(csvs)>1:
             raise ValueError("每个任务最多一个 CSV 属性表")
         up_axis, scale = request.get("upAxis","Z"), float(request.get("scale",1))
+        encoding = request.get("encoding","utf-8-sig")
+        reverse_winding = request.get("reverseWinding",False)
+        if encoding not in ("utf-8-sig","gbk") or not isinstance(reverse_winding,bool):
+            raise ValueError("模型编码或绕向设置无效")
         if up_axis not in ("Y","Z") or not 0 < scale < 1e9:
             raise ValueError("模型单位比例或上轴无效")
         id = uuid.uuid4().hex
@@ -72,7 +86,8 @@ class TaskStore:
             target.parent.mkdir(parents=True,exist_ok=True)
             target.write_bytes(data)
         event = threading.Event()
-        task = {"id":id,"status":"queued","progress":0,"message":"等待处理","options":vars(options)}
+        task = {"id":id,"status":"queued","progress":0,"message":"等待处理","options":vars(options),
+                "resourceTask":resource_task,"importOptions":{"upAxis":up_axis,"scale":scale,"encoding":encoding,"reverseWinding":reverse_winding}}
         with self.lock:
             self.tasks[id],self.events[id] = task,event
         self.update(id)
@@ -83,9 +98,16 @@ class TaskStore:
             try:
                 check()
                 self.update(id,status="running",progress=5,message="正在导入模型")
-                scene = import_scene([source/name for name,_ in decoded if name.lower().endswith(".obj")],up_axis,scale,
-                                     source/csvs[0] if csvs else None,check)
+                if resource is not None:
+                    self.update(id,message="正在读取已有资源库")
+                    scene = json.loads(resource.read_text(encoding="utf-8"))
+                    if scene.get("version") != 1:
+                        raise ValueError("不支持的资源库版本")
+                else:
+                    scene = import_scene([source/name for name,_ in decoded if name.lower().endswith((".obj",".fbx"))],up_axis,scale,
+                                         source/csvs[0] if csvs else None,check,encoding,reverse_winding)
                 dump(folder/"resource.json",scene)
+                self.update(id,resourceAvailable=True)
                 report = tile_scene(scene,folder/"output",options,lambda p,m:self.update(id,progress=p,message=m),event.is_set)
                 import zipfile
                 with zipfile.ZipFile(folder/"output.zip","w",zipfile.ZIP_DEFLATED) as archive:
@@ -129,6 +151,7 @@ class Handler(SimpleHTTPRequestHandler):
             from urllib.parse import unquote
             target = (self.store.root/unquote(path[len("/artifacts/"):])).resolve()
             if not target.is_relative_to(self.store.root) or not target.is_file():
+                self.log_error("Artifact unavailable: %s (workspace %s)",target,self.store.root)
                 self.response(404,{"error":"文件不存在"})
                 return
             self.send_response(200)

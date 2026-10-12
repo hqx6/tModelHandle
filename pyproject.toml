@@ -9,6 +9,9 @@ description = "Offline OBJ to georeferenced 3D Tiles with task UI"
 requires-python = ">=3.10"
 dependencies = []
 
+[project.optional-dependencies]
+advanced = ["numpy>=2,<3", "DracoPy>=2.2,<3", "ufbx==0.0.5", "fast-simplification>=0.2,<0.3"]
+
 [project.scripts]
 model-tiler = "model_tiler.cli:main"
 

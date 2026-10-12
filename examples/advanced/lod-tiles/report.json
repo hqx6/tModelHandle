@@ -1,0 +1,101 @@
+{
+  "status": "completed",
+  "objects": 1,
+  "triangles": 512,
+  "tiles": [
+    {
+      "uri": "tiles/00000.b3dm",
+      "bytes": 8592,
+      "triangles": 512,
+      "sha256": "83e387327e8997c8b1c5a83bc5132588f5b2f9dd386de7984ef88069c18490a7",
+      "lodLevel": 0,
+      "format": "b3dm",
+      "instanceGroups": 0,
+      "instances": 0,
+      "storedTriangles": 512
+    },
+    {
+      "uri": "tiles/00001.b3dm",
+      "bytes": 4184,
+      "triangles": 128,
+      "sha256": "98eb8551fabc288100a5a4112c5ef1c51116e313d8431cb2a2d907f99af6262d",
+      "lodLevel": 1,
+      "format": "b3dm",
+      "instanceGroups": 0,
+      "instances": 0,
+      "storedTriangles": 128
+    },
+    {
+      "uri": "tiles/00002.b3dm",
+      "bytes": 3288,
+      "triangles": 64,
+      "sha256": "e04a1411b6076f14f95aeb15a83af0f47963ef047628b1f44de0b6f16cc6804f",
+      "lodLevel": 2,
+      "format": "b3dm",
+      "instanceGroups": 0,
+      "instances": 0,
+      "storedTriangles": 64
+    }
+  ],
+  "options": {
+    "longitude": 116.39123,
+    "latitude": 39.90691,
+    "height": 100,
+    "mode": "simplify",
+    "max_triangles": 50000,
+    "max_depth": 8,
+    "visible_pixels": 25,
+    "double_sided": false,
+    "unlit": false,
+    "alpha_mode": "auto",
+    "alpha_cutoff": 0.5,
+    "origin": "original",
+    "property_fields": null,
+    "max_tile_bytes": 0,
+    "draco": true,
+    "draco_level": 7,
+    "draco_bits": 14,
+    "instance_min_count": 0,
+    "lod_ratio": 0.25,
+    "lod_levels": 2
+  },
+  "warnings": [
+    "化简模式的最高精度层保留全部几何；带纹理、接缝、多材质和无法安全化简的构件保留原网格，实际化简比例记录在 lod 中"
+  ],
+  "oversizedTiles": [],
+  "originOffset": [
+    0,
+    0,
+    0
+  ],
+  "lod": [
+    {
+      "algorithm": "quadric-edge-collapse",
+      "requestedRatio": 0.25,
+      "inputTriangles": 512,
+      "outputTriangles": 128,
+      "simplifiedComponents": 1,
+      "preservedComponents": 0,
+      "preservedReasons": {},
+      "errorMethod": "component-aabb-diagonal-bound",
+      "achievedRatio": 0.25,
+      "level": 1
+    },
+    {
+      "algorithm": "quadric-edge-collapse",
+      "requestedRatio": 0.0625,
+      "inputTriangles": 512,
+      "outputTriangles": 64,
+      "simplifiedComponents": 1,
+      "preservedComponents": 0,
+      "preservedReasons": {},
+      "errorMethod": "component-aabb-diagonal-bound",
+      "achievedRatio": 0.125,
+      "level": 2
+    }
+  ],
+  "leafTriangles": 512,
+  "storedTriangles": 704,
+  "instancedObjects": 0,
+  "oversizedByteTiles": []
+}

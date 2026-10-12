@@ -1,14 +1,43 @@
+test_fbx_upload_and_advanced_cache_reuse (test_advanced_integration.AdvancedIntegrationTests.test_fbx_upload_and_advanced_cache_reuse) ... ok
+test_full_resolution_lod_leaves_metadata_and_monotone_errors (test_advanced_integration.AdvancedIntegrationTests.test_full_resolution_lod_leaves_metadata_and_monotone_errors) ... ok
+test_mixed_obj_fbx_csv_and_resource_identity (test_advanced_integration.AdvancedIntegrationTests.test_mixed_obj_fbx_csv_and_resource_identity) ... ok
+test_embedded_image_material_and_lossless_uv_normals (test_draco.DracoTests.test_embedded_image_material_and_lossless_uv_normals) ... ok
+test_invalid_parameters_and_input (test_draco.DracoTests.test_invalid_parameters_and_input) ... ok
+test_meaningful_geometry_reduction (test_draco.DracoTests.test_meaningful_geometry_reduction) ... ok
+test_real_decode_counts_bounds_ids_and_face_association (test_draco.DracoTests.test_real_decode_counts_bounds_ids_and_face_association) ... ok
+test_animation_rejected (test_fbx.FbxTest.test_animation_rejected) ... ok
+test_ascii_hierarchy_material_uv_units (test_fbx.FbxTest.test_ascii_hierarchy_material_uv_units) ... ok
+test_cancel_and_bad_file (test_fbx.FbxTest.test_cancel_and_bad_file) ... ok
+test_embedded_texture (test_fbx.FbxTest.test_embedded_texture) ... ok
+test_external_texture_and_containment (test_fbx.FbxTest.test_external_texture_and_containment) ... ok
+test_real_binary_and_reverse_axis (test_fbx.FbxTest.test_real_binary_and_reverse_axis) ... ok
+test_reflection_has_consistent_winding (test_fbx.FbxTest.test_reflection_has_consistent_winding) ... ok
+test_mixed_content_cmpt_and_material_mismatch (test_instances.InstanceTests.test_mixed_content_cmpt_and_material_mismatch) ... ok
+test_new_option_validation (test_instances.InstanceTests.test_new_option_validation) ... ok
+test_partial_objects_threshold_and_rounding_do_not_lose_geometry (test_instances.InstanceTests.test_partial_objects_threshold_and_rounding_do_not_lose_geometry) ... ok
+test_rotated_scaled_instances_binary_and_reconstruction (test_instances.InstanceTests.test_rotated_scaled_instances_binary_and_reconstruction) ... ok
+test_aggressive_ratio_retains_every_small_component (test_simplify.SimplificationTests.test_aggressive_ratio_retains_every_small_component) ... ok
+test_curved_mesh_is_decimated_and_keeps_outward_normals (test_simplify.SimplificationTests.test_curved_mesh_is_decimated_and_keeps_outward_normals) ... ok
+test_preserves_material_texture_uv_and_normal_seams (test_simplify.SimplificationTests.test_preserves_material_texture_uv_and_normal_seams) ... ok
+test_ratio_validation_and_cancellation (test_simplify.SimplificationTests.test_ratio_validation_and_cancellation) ... ok
+test_real_reduction_normals_feature_coverage_and_component_bounds (test_simplify.SimplificationTests.test_real_reduction_normals_feature_coverage_and_component_bounds) ... ok
+test_actual_byte_budget_and_unavoidable_overflow (test_tiler.TilerTests.test_actual_byte_budget_and_unavoidable_overflow) ... ok
 test_cache_roundtrip_and_output_not_overwritten (test_tiler.TilerTests.test_cache_roundtrip_and_output_not_overwritten) ... ok
 test_cancel_removes_partial_output (test_tiler.TilerTests.test_cancel_removes_partial_output) ... ok
+test_center_origin_preserves_world_position_and_resource (test_tiler.TilerTests.test_center_origin_preserves_world_position_and_resource) ... ok
 test_concave_negative_indices_y_up_and_scale (test_tiler.TilerTests.test_concave_negative_indices_y_up_and_scale) ... ok
 test_ecef_anchor_and_orientation (test_tiler.TilerTests.test_ecef_anchor_and_orientation) ... ok
+test_gbk_and_reversed_winding_with_explicit_normals (test_tiler.TilerTests.test_gbk_and_reversed_winding_with_explicit_normals) ... ok
 test_geometry_metadata_and_binary_layout (test_tiler.TilerTests.test_geometry_metadata_and_binary_layout) ... ok
 test_invalid_geometry_and_path_escape (test_tiler.TilerTests.test_invalid_geometry_and_path_escape) ... ok
+test_new_option_validation (test_tiler.TilerTests.test_new_option_validation) ... ok
 test_octree_add_without_loss_or_duplicate_features (test_tiler.TilerTests.test_octree_add_without_loss_or_duplicate_features) ... ok
+test_task_resource_reuse_without_upload_and_restart (test_tiler.TilerTests.test_task_resource_reuse_without_upload_and_restart) ... ok
 test_task_upload_validation (test_tiler.TilerTests.test_task_upload_validation) ... ok
 test_texture_embedded (test_tiler.TilerTests.test_texture_embedded) ... ok
+test_unlit_alpha_and_property_selection_in_actual_b3dm (test_tiler.TilerTests.test_unlit_alpha_and_property_selection_in_actual_b3dm) ... ok
 
 ----------------------------------------------------------------------
-Ran 9 tests in 0.016s
+Ran 38 tests in 0.623s
 
 OK

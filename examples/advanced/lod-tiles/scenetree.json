@@ -1,0 +1,52 @@
+{
+  "schema": "model-tiler/1",
+  "scenes": [
+    {
+      "type": "node",
+      "name": "terrain.obj",
+      "children": [
+        {
+          "type": "element",
+          "id": "4b7f3d2b-b7d1-567e-b0a6-83e80c8713aa",
+          "name": "terrain",
+          "source": "terrain.obj",
+          "sourceIndex": 0,
+          "boundingVolume": {
+            "box": [
+              8.0,
+              8.0,
+              0.0,
+              8.0,
+              0,
+              0,
+              0,
+              8.0,
+              0,
+              0,
+              0,
+              1e-06
+            ]
+          },
+          "sphere": [
+            -2177788.431232048,
+            4388794.975231865,
+            4070132.5338410507,
+            11.313708498984804
+          ],
+          "properties": {},
+          "tiles": [
+            "tiles/00000.b3dm",
+            "tiles/00001.b3dm",
+            "tiles/00002.b3dm"
+          ]
+        }
+      ],
+      "sphere": [
+        -2177788.431232048,
+        4388794.975231865,
+        4070132.5338410507,
+        11.313708498984804
+      ]
+    }
+  ]
+}
